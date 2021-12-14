@@ -1,5 +1,6 @@
 const { User } = require("../../model");
 const { Conflict } = require("http-errors");
+const gravatar = require("gravatar");
 // const bcrypt = require("bcryptjs");
 
 const register = async (req, res) => {
@@ -10,7 +11,8 @@ const register = async (req, res) => {
     throw new Conflict("Email in use");
   }
 
-  const newUser = new User({ email });
+  const avatarURL = gravatar.url(email);
+  const newUser = new User({ email, avatarURL });
   newUser.setPassword(password);
   newUser.save();
   //   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -21,6 +23,7 @@ const register = async (req, res) => {
     code: 201,
     data: {
       email,
+      avatarURL,
     },
   });
 };
