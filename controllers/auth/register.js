@@ -4,6 +4,8 @@ const gravatar = require("gravatar");
 const { v4 } = require("uuid");
 const { sendEmail } = require("../../helpers");
 
+const { PORTFORMAIL } = process.env;
+
 const register = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -21,7 +23,7 @@ const register = async (req, res) => {
   const mail = {
     to: email,
     subject: "Подтверждение email",
-    html: `<a href="http://localhost:3000/api/users/verify/${verificationToken}">Нажмите для подтверждения</a>`,
+    html: `<a href="http://${PORTFORMAIL}/api/users/verify/${verificationToken}">Нажмите для подтверждения</a>`,
   };
 
   sendEmail(mail);
